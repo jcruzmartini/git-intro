@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>GIT Overview</title>
+
+        <meta name="description" content="Introducción a Git">
+        <meta name="author" content="Damián Valdés/Patricio Keilty">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="css/reveal.min.css">
+        <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+        <script>
+            if( window.location.search.match( /print-pdf/gi ) ) {
+                var link = document.createElement( 'link' );
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = 'css/print/pdf.css';
+                document.getElementsByTagName( 'head' )[0].appendChild( link );
+            }
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+
+        <style type="text/css">
+
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <!-- Slide #1 -->
+                <section>
+                    <h1>GIT Overview</h1>
+                    <p><img title="Git logo" src="img/2color-lightbg.png"></p>
+                    <p>
+                        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                            <img alt="Licencia Creative Commons" style="border-width:0" src="img/cc-by-nc-sa-88x31.png" />
+                        </a>
+                    </p>
+                    <!--p>
+                        <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Introducción a GIT</span> por <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Damián Ignacio Valdés/Patricio Keilty</span> se encuentra bajo una Licencia <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Atribución-NoComercial-CompartirDerivadasIgual 3.0 Unported</a>.
+                    </p-->
+                </section>
+
+                <!-- Slide #2 -->
+                <section>
+                    <h1>CONTENT</h1>
+                    <ul>
+                        <li>Introduction</li>
+                        <li>Basic Operations</li>
+                        <li>Branching &amp; merging</li>
+                        <li>Remote Repositories</li>
+                        <li>References</li>
+                        <li>Examples</li>
+                    </ul>
+                </section>
+
+                <!-- Slide #3 -->
+                <section>
+                    <h1>What is git?</h1>
+                    <ul>
+                        <li class="fragment roll-in">it's an <strong>open source</strong> version control system</li>
+                        <li class="fragment roll-in">goals: speed, simple design, strong support for non-linear development (thousands of parallel branches), fully distributed, able to handle large projects like the Linux kernel efficiently (speed and data size)</li>
+                        <li class="fragment roll-in">developed as a version control system for Linux in 2005</li>
+                        <li class="fragment roll-in">created by Linus Torvalds (who also created the Linux kernel)</li>
+                    </ul>
+                    <p  class="fragment roll-in">! another definition: <a href="http://translate.google.com/#auto|es|you%20are%20a%20git">stupid content tracker</a></p>
+
+                </section>
+
+                <!-- Slide #5 -->
+                <section>
+                    <h1>SCM Taxonomies</h1>
+                    <h2>Storage:</h2>
+                    <ul>
+                        <li>diffs/deltas</li>
+                        <li>DAG/snapshots</li>
+                    </ul>
+                </section>
+
+                <!-- Slide #6 -->
+                <section>
+                    <h2>SCM Taxonomies</h2>
+                    <h3><span >Deltas</span><span class="fragment" data-fragment-index="2"> vs Snapshots</span><h3>
+                    <div style="margin: 0 auto; width: 500px; height: 250px;">
+                        <div style="position: absolute; z-index: 0;">
+                            <img title="deltas" src="img/diff-storage-5.png">
+                        </div>
+                        <div class="fragment current-visible" data-fragment-index="2" style="position: absolute; z-index: 1;">
+                            <img title="snapshots" src="img/snapshot-storage-5.png">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Slide #7 -->
+                <section>
+                    <h2>SCM Taxonomies</h2>
+                    <h3>By architecture</h3>
+                        <li class="fragment grow">local: restricted to a local machine</li>
+                        <li class="fragment grow">centralized: client-server</li>
+                        <li class="fragment grow">distributed: pair networks, there are multiple in-sync copies</li>
+                </section>
+
+                <!-- Slide #8 -->
+                <section>
+                    <h2>SCM Taxonomies</h2>
+                    <h3>Taxonomy matrix</h3>
+                    <img title="tax" src="img/taxonomy-matrix.png">
+                </section>
+
+                <!-- Slide #9 -->
+                <section>
+                    <h2>Features</h2>
+                        <li class="fragment highlight-blue">local operations (local repository copy, no need to be online): checkouts, commits, branching, history analysis</li>
+                        <li class="fragment highlight-blue">integrity: each object in the database has a hash (SHA1 - 40 hexadecimal digits - criptographycally safe)</li>
+                        <li class="fragment highlight-blue">simple storage structure: always writes data, no updates</li>
+                        <li class="fragment highlight-blue">3-status files: committed, modified and staged (ready to be committed)</li>
+                </section>
+
+                <section>
+                    <h2>File Statuses</h2>
+                    <img title="local" src="img/local-states.png">
+                </section>
+
+<!-- Comandos básicos -->
+                <section>
+                    <h1>Basic Commands</h1>
+                </section>
+                <section>
+                    <h2>Initializing a repository</h2>
+			<ul>
+			<li><p>local initialization</p>
+			<p><pre><code data-trim>$ git init</code></pre></p></li>
+			<li><p>clone a remote repository</p>
+			<p><pre><code data-trim>$ git clone git://github.com/schacon/grit.git</code></pre></p></li>
+			</ul>
+                </section>
+
+		<!-- -->
+                <section>
+                    <h2>.git directory</h2>
+			<p><pre><code data-trim>
+    $ tree .git
+    .git
+    |-- config
+    |-- description
+    |-- HEAD
+    |-- hooks
+    |   |-- commit-msg.sample
+    |-- index
+    |-- info
+    |   `-- exclude
+    |-- objects
+    |   |-- info
+    |   `-- pack
+    `-- refs
+        |-- heads
+        `-- tags
+			</code></pre></p>
+                </section>
+
+		<!-- -->
+                <section>
+                    <h2>Checking the status</h2>
+			<p>nothing to commit</p>
+			<p><pre><code data-trim>
+    $ git status
+    # On branch master
+    nothing to commit (working directory clean)
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Checking the status</h2>
+			<p>There are modifications</p>
+			<p><pre><code>
+    $ vim README
+    $ git status
+    # On branch master
+    # Untracked files:
+    #   (use "git add &lt;file&gt;..." to include in what will be committed)
+    #
+    #   README
+    nothing added to commit but untracked files present (use "git add" to track)
+
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Adding new files</h2>
+			<p></p>
+			<p><pre><code>
+    $ git add README
+
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   new file:   README
+    #
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Staging modifications</h2>
+			<p></p>
+			<p><pre><code>
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    # 
+    #   new file:   README
+    #
+    # Changed but not updated:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    # 
+    #   modified:   benchmarks.rb
+    # 
+
+    $ git add benchmarks.rb
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    # 
+    #   new file:   README
+    #   modified:   benchmarks.rb
+    # 
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Ignoring changes (.gitignore)</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ cat .gitignore 
+    *target/
+    *.settings/
+    *.classpath
+    *.project
+    *bin/
+			</code></pre></p>
+			<p><pre><code data-trim>
+    # a comment - this is ignored
+    *.a       # no .a files
+    !lib.a    # but do track lib.a, even though you're ignoring .a files above
+    /TODO     # only ignore the root TODO file, not subdir/TODO
+    build/    # ignore all files in the build/ directory
+    doc/*.txt # ignore doc/notes.txt, but not doc/server/arch.txt
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h3>Looking at changes in detail</h3>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   new file:   README
+    #
+    # Changed but not updated:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #
+    #   modified:   benchmarks.rb
+    #
+
+			</code></pre></p>
+			<p><pre><code data-trim>
+    $ git diff
+    diff --git a/benchmarks.rb b/benchmarks.rb
+    index 3cb747f..da65585 100644
+    --- a/benchmarks.rb
+    +++ b/benchmarks.rb
+    @@ -36,6 +36,10 @@ def main
+               @commit.parents[0].parents[0].parents[0]
+             end
+
+    +        run_code(x, 'commits 1') do
+    +          git.commits.size
+    +        end
+    +
+             run_code(x, 'commits 2') do
+               log = git.commits('master', 15)
+               log.size
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Looking at changes (staged or cached)</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git diff --cached
+    diff --git a/README b/README
+    new file mode 100644
+    index 0000000..03902a1
+    --- /dev/null
+    +++ b/README2
+    @@ -0,0 +1,5 @@
+    +grit
+    + by Tom Preston-Werner, Chris Wanstrath
+    + http://github.com/mojombo/grit
+    +
+    +Grit is a Ruby library for extracting information from a Git repository     
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Committing changes</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git commit
+
+    # Please enter the commit message for your changes. Lines starting
+    # with '#' will be ignored, and an empty message aborts the commit.
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #       new file:   README
+    #       modified:   benchmarks.rb
+    ~
+    ~
+    ~
+    ".git/COMMIT_EDITMSG" 10L, 283C
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Deleting</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git rm grit.gemspec
+    rm 'grit.gemspec'
+    $ git status
+    # On branch master
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #       deleted:    grit.gemspec
+    #
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Renaming or moving</h2>
+			<p><pre><code data-trim>
+    $ git mv README.txt README
+    $ git status
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 1 commit.
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #       renamed:    README.txt -> README
+    #
+			</code></pre></p>
+
+<p>git is smart enough to detect it when it was not informed</p>
+			<p><pre><code data-trim>
+
+    $ mv README.txt README
+    $ git rm README.txt
+    $ git add README
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Undoing the last commit: commit --amend</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git commit -m 'initial commit'
+    $ git add forgotten_file
+    $ git commit --amend
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Undoing changes: reset</h2>
+			<p>Let's suppose... </p>
+			<p><pre><code data-trim>
+    $ git add .
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #       modified:   README.txt
+    #       modified:   benchmarks.rb
+    #
+			</code></pre></p>
+			<p> ... and then we want to go back and not to commit benchmarks.rb</p>
+			<p><pre><code data-trim>
+    $ git reset HEAD benchmarks.rb
+    benchmarks.rb: locally modified
+
+    $ git status
+    # On branch master
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #       modified:   README.txt
+    #
+    # Changed but not updated:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #       modified:   benchmarks.rb
+    #
+			</code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                <section>
+                    <h2>Reviewing history</h2>
+			<h3>git log</h3>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git log
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author: Scott Chacon <schacon@gee-mail.com>
+    Date:   Mon Mar 17 21:52:11 2008 -0700
+
+        changed the version number
+
+    commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+    Author: Scott Chacon <schacon@gee-mail.com>
+    Date:   Sat Mar 15 16:40:33 2008 -0700
+
+        removed unnecessary test code
+
+    commit a11bef06a3f659402fe7563abf99ad00de2209e6
+    Author: Scott Chacon <schacon@gee-mail.com>
+    Date:   Sat Mar 15 10:31:28 2008 -0700
+
+        first commit
+			</code></pre></p>
+                </section>
+                <section>
+			<h3>other alternatives to format the ouput:</h3>
+			<p><pre><code data-trim>
+$ git log --stat
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    changed the version number
+
+ Rakefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Sat Mar 15 16:40:33 2008 -0700
+
+    removed unnecessary test code
+
+ lib/simplegit.rb |    5 -----
+ 1 file changed, 5 deletions(-)
+
+commit a11bef06a3f659402fe7563abf99ad00de2209e6
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Sat Mar 15 10:31:28 2008 -0700
+
+    first commit
+
+ README           |    6 ++++++
+ Rakefile         |   23 +++++++++++++++++++++++
+ lib/simplegit.rb |   25 +++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+)
+			</code></pre></p>
+<p>shows files and changes statictics</p>
+                </section>
+                <section>
+                        <h3>other alternatives to format the ouput:</h3>
+			<p><pre><code data-trim>
+$ git log -p -2
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    changed the version number
+
+diff --git a/Rakefile b/Rakefile
+index a874b73..8f94139 100644
+--- a/Rakefile
++++ b/Rakefile
+@@ -5,5 +5,5 @@ require 'rake/gempackagetask'
+ spec = Gem::Specification.new do |s|
+     s.name      =   "simplegit"
+-    s.version   =   "0.1.0"
++    s.version   =   "0.1.1"
+     s.author    =   "Scott Chacon"
+     s.email     =   "schacon@gee-mail.com
+
+commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Sat Mar 15 16:40:33 2008 -0700
+
+    removed unnecessary test code
+
+diff --git a/lib/simplegit.rb b/lib/simplegit.rb
+index a0a60ae..47c6340 100644
+--- a/lib/simplegit.rb
++++ b/lib/simplegit.rb
+@@ -18,8 +18,3 @@ class SimpleGit
+     end
+
+ end
+-
+-if $0 == __FILE__
+-  git = SimpleGit.new
+-  puts git.show
+-end
+\ No newline at end of file
+
+			</code></pre></p>
+<p>shows diffs between commits, for the last two commits!</p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h3>Reviewing history</h3>
+			<p>... visual ;-)</p>
+			<p><img src="img/smartgit.png" width="90%" /></p>
+                </section>
+                </section>
+
+
+		<!-- code -->
+                <section>
+                <section>
+                    <h2>Saving the work in progress</h2>
+			<h3>Using the stash</h3>
+
+			<p><pre><code data-trim>
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD &lt;file&gt;..." to unstage)
+#
+#      modified:   index.html
+#
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#
+#      modified:   lib/simplegit.rb
+#
+
+$ git stash save
+Saved working directory and index state \
+  "WIP on master: 049d078 added the index file"
+HEAD is now at 049d078 added the index file
+(To restore them type "git stash apply")
+			</code></pre></p>
+                </section>
+                <section>
+			<h3>Using the stash</h3>
+			<p><pre><code data-trim>
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+			</code></pre></p>
+
+			<p></p>
+			<p><pre><code data-trim>
+$ git stash apply
+# On branch master
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#
+#      modified:   index.html
+#      modified:   lib/simplegit.rb
+#
+			</code></pre></p>
+                </section>
+                </section>
+                <section>
+                    <h2>Getting help</h2>
+			<h3>Help!</h3>
+			<p><pre><code data-trim>
+$ git help
+usage: git [--version] [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [-c name=value] [--help]
+           <command> [<args>]
+
+The most commonly used git commands are:
+   add        Add file contents to the index
+   bisect     Find by binary search the change that introduced a bug
+   branch     List, create, or delete branches
+   checkout   Checkout a branch or paths to the working tree
+   clone      Clone a repository into a new directory
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree, etc
+   fetch      Download objects and refs from another repository
+   grep       Print lines matching a pattern
+   init       Create an empty git repository or reinitialize an existing one
+   log        Show commit logs
+   merge      Join two or more development histories together
+   mv         Move or rename a file, a directory, or a symlink
+   pull       Fetch from and merge with another repository or a local branch
+   push       Update remote refs along with associated objects
+   rebase     Forward-port local commits to the updated upstream head
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from the index
+   show       Show various types of objects
+   status     Show the working tree status
+   tag        Create, list, delete or verify a tag object signed with GPG
+
+See 'git help <command>' for more information on a specific command.
+
+			</code></pre></p>
+			<p><pre><code data-trim>
+$ git help status
+$ git help commit
+			</code></pre></p>
+                </section>
+
+<!-- BRANCHING -->
+                <section>
+                <section>
+                    <h1>Branching</h1>
+                    <h2>What is a branch in Git?</h2>
+                        <li class="fragment roll-in">A branch in Git is an agile and movable pointer to a commit.</li>
+                        <li class="fragment roll-in">When you create a repository, Git makes a branch that "points" to the last commit. By default has the name of "master".</li>
+                        <li class="fragment roll-in">You can create your own branches, from any commit.</li>
+                        <li class="fragment roll-in">As you make new commits, that pointer is going to move forward automatically.</li>
+                </section>
+
+
+                <section>
+                    <h2>Simple Branching</h2>
+			<p>A scenario example:</p>
+                        <li class="fragment roll-in">we are working in a project that we have somes commits already</li>
+                        <li class="fragment roll-in">we begin to work in a new story and we create a new branch call "iss53"</li>
+                        <li class="fragment roll-in">it comes a requirement to solve a high priority bug</li>
+                        <li class="fragment roll-in">need to momentarily leave the story to provide a hotfix</li>
+                        <li class="fragment roll-in">we create a branch "hotfix", and once we test our fix, must be merge and needs to be deployed in production</li>
+                        <li class="fragment roll-in">back to work in the story</li>
+                </section>
+
+                <section>
+                      <h2>History of the current project</h2>
+                      <img title="" src="img/branching1.png">
+                </section>
+                <section>
+                      <h2>New branch iss53</h2>
+                      <p><pre><code data-trim>
+    $ git checkout -b iss53
+    Switched to a new branch "iss53"
+                      </code></pre></p>
+                      <img title="" src="img/branching2.png">
+                </section>
+                <section>
+                      <h2>Commits of the iss53 branch</h2>
+                      <p><pre><code data-trim>
+    $ vim index.html
+    $ git commit -a -m 'added a new footer [issue 53]'
+                      </code></pre></p>
+                      <img title="" src="img/branching3.png">
+                      <p>watch how the reference is move forward</p>
+                </section>
+                <section>
+                    <h2>Back to master to work in the fix</h2>
+			<p></p>
+			<p><pre><code data-trim>
+    $ git checkout master
+    Switched to branch "master"
+                         </code></pre></p>
+                         <p>Git resets your working directory to be the same that the last commit on master.</p>
+                </section>
+                <section>
+                    <h2>Create the hotfix branch, and we build the fix</h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git checkout -b 'hotfix'
+Switched to a new branch "hotfix"
+    
+    
+$ vim index.html
+$ git commit -a -m 'fixed the broken email address'
+[hotfix]: created 3a0874c: "fixed the broken email address"
+1 files changed, 0 insertions(+), 1 deletions(-)
+                        </code></pre></p>
+                        <img title="" src="img/branching4.png">
+                </section>
+                <section>
+                    <h2>Ready to merge the hotfix into master</h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git checkout master
+$ git merge hotfix
+Updating f42c576..3a0874c
+Fast forward
+README |    1 -
+1 files changed, 0 insertions(+), 1 deletions(-)
+                        </code></pre></p>
+                        <img title="" src="img/branching5.png">
+                        <p>Ready to deploy in production and get back to the story!</p>
+                </section>
+		<!-- code -->
+                <section>
+                    <h2>Fast forwarding branches</h2>
+			<p>A branch that was updated recently by commits, is likely to make fast-forwarding when your commits are ancestors of the new ones.
+</p>
+                </section>
+		<!-- code -->
+                <section>
+                    <h2>Back to the story</h2>
+			<p>removing the hotfix branch</p>
+			<p><pre><code data-trim>
+$ git branch -d hotfix
+Deleted branch hotfix (3a0874c).
+                        </code></pre></p>
+			<p>switch to iss53 branch</p>
+			<p><pre><code data-trim>
+$ git checkout iss53
+Switched to branch "iss53"
+$ vim index.html
+$ git commit -a -m 'finished the new footer [issue 53]'
+[iss53]: created ad82d7a: "finished the new footer [issue 53]"
+1 files changed, 1 insertions(+), 0 deletions(-)
+                </code></pre></p>
+                        <img title="local" src="img/branching6.png">
+                </section>
+
+                <section>
+                    <h2>Merging</h2>
+			<p>How can I update master with the new functionality?</p>
+			<p><pre><code data-trim>
+$ git checkout master
+$ git merge iss53
+Merge made by recursive.
+ README |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+                        </code></pre></p>
+                        <img title="local" src="img/merging1.png">
+                </section>
+
+                <section>
+                    <h2>Merging: trouble case</h2>
+			<p>Git will let you know when cannot merge automatically</p>
+			<p><pre><code data-trim>
+$ git merge iss53
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ git status
+index.html: needs merge
+# On branch master
+# Changed but not updated:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   unmerged:   index.html
+#
+
+<<<<<<< HEAD
+<div id="footer">contact : email.support@github.com</div>
+=======
+<div id="footer">
+  please contact us at support@github.com
+</div>
+>>>>>>> iss53
+
+</code></pre></p>
+                </section>
+
+                <section>
+                    <h2>Merging: trouble case</h2>
+			<p>Must be resolved manually or using some merge tool (mergetool)</p>
+			<p><pre><code data-trim>
+$ vim index.html
+
+$ git add index.html
+
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD &lt;file&gt;..." to unstage)
+#
+#   modified:   index.html
+#
+                        </code></pre></p>
+                </section>
+
+                <section>
+                    <h2>Getting branch information</h2>
+			<p>Some useful commands</p>
+			<p><pre><code data-trim>
+$ git branch -v
+iss53   93b412c fix javascript issue
+* master  7a98805 Merge branch 'iss53'
+testing 782fd34 add scott to the author list in the readmes
+                        </code></pre></p>
+                        <p>to get local branches</p>
+			<p><pre><code data-trim>
+$ git branch --merged
+iss53
+* master
+                        </code></pre></p>
+                        <p>Informs the branches that are merge in the current branch</p>
+			<p><pre><code data-trim>
+$ git branch --contains e5c2d6ec
+* master
+                        </code></pre></p>
+                        <p>prints the branches that has e5c2d6ec commit on...</p>
+
+
+
+                </section>
+
+                <section>
+                    <h2>Branches: common strategies</h2>
+			<h3>Branches long stay</h3>
+                        <img title="local" src="img/long-running-branches.png">
+                        <p>Very long life</p>
+                </section>
+
+                <section>
+                    <h2>Branches: common strategies</h2>
+			<h3>Branches by topic</h3>
+                        <img title="local" src="img/topic-branches.png">
+                        <p>Topic branches on the other hand has very short life</p>
+                </section>
+
+                <section>
+                    <h2>Rebasing vs Merge</h2>
+			<p>
+                        <img title="local" src="img/merging2.png">
+                        </p>
+			<p><pre><code data-trim>
+$ git checkout experiment
+$ git rebase master
+First, rewinding head to replay your work on top of it...
+Applying: added staged command
+                        </code></pre></p>
+                        <img title="local" src="img/rebasing1.png">
+                        <p>gets the C3 commit and replicates in the branch generated by the new C3 commit</p>
+                </section>
+                </section>
+
+                <section>
+		<!-- code -->
+                <section>
+                    <h1>Remotes repositories</h1>
+			<p>The remotes repositories allows you shared the code, are copies of our objects, to_synchronize_uses: </p>
+                        <p><strong>push</strong>, <strong>fetch</strong> (<strong>pull</strong>)</p>
+                </section>
+                <section>
+                    <h2>Showing remote repos (remote -v)</h2>
+			<p><pre><code data-trim>
+$ git remote -v
+origin  git://github.com/schacon/ticgit.git
+                         </code></pre></p>
+                </section>
+                <section>
+                    <h2>Adding remote repo (remote add)</h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git remote
+origin
+$ git remote add pb git://github.com/paulboone/ticgit.git
+$ git remote -v
+origin  git://github.com/schacon/ticgit.git
+pb  git://github.com/paulboone/ticgit.git
+                        </code></pre></p>
+                </section>
+
+                <section>
+                    <h2>Synchronizing local copy of remote repo (fetch) </h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git fetch pb
+remote: Counting objects: 58, done.
+remote: Compressing objects: 100% (41/41), done.
+remote: Total 44 (delta 24), reused 1 (delta 0)
+Unpacking objects: 100% (44/44), done.
+From git://github.com/paulboone/ticgit
+ * [new branch]      master     -> pb/master
+ * [new branch]      ticgit     -> pb/ticgit
+                        </code></pre></p>
+                </section>
+                <section>
+                    <h2>Pushing/uploading changes in remote repo (push)</h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git push origin master
+                        </code></pre></p>
+                </section>
+
+                <section>
+                    <h2>Remote repo information (remote show)</h2>
+			<p></p>
+			<p><pre><code data-trim>
+$ git remote show origin
+* remote origin
+  URL: git://github.com/schacon/ticgit.git
+  Remote branch merged with 'git pull' while on branch master
+    master
+  Tracked remote branches
+    master
+    ticgit
+                        </code></pre></p>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Remote Repositories</h2>
+                    <h3>Examples</h3>
+                </section>
+
+		<!-- code -->
+                <section>
+                    <h2>Examples</h2>
+
+                    <div style="position: relative; margin: 0 auto; width: 879px; height: 535px;">
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="delta" src="img/remote1.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="delta" src="img/remote2.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote3.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote4.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote5.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote6.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote7.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote8.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote9.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote10.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote11.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote12.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote13.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote14.png">
+                        </div>
+                        <div class="fragment current-visible" style="position: absolute; z-index: 1;">
+                            <img title="dag" src="img/remote15.png">
+                        </div>
+                    </div>
+
+
+
+
+                </section>
+                </section>
+
+                <section>
+                    <h1>To sum up</h1>
+                    <h2>Conclusion</h2>
+                        <ul>
+                        <li class="fragment roll-in">fast and efficient (most used operations are local)</li>
+                        <li class="fragment roll-in">everyone has a copy, hence there are many backups ;)</li>
+                        <li class="fragment roll-in">not need to be connected to:</li>
+                        <ul>
+                        <li class="fragment roll-in">see file history</li>
+                        <li class="fragment roll-in">create a new branch or switching branches</li>
+                        <li class="fragment roll-in">merge code between branches</li>
+                        <li class="fragment roll-in">code commits</li>
+                        <li class="fragment roll-in">see differences between versions</li>
+                        <li class="fragment roll-in">get any version of a file</li>
+                        </ul>
+ 
+                        </ul>
+                </section>
+
+		<!-- -->
+                <section>
+                    <h2>References</h2>
+                    <h3>Books</h3>
+<ul><li><a href="http://git-scm.com/book/">Pro Git (also available online for free)</a></li></ul>
+<p><img src="img/progit.png" height="150px" />
+
+                    <h3>Downloads, websites</h3>
+<ul>
+<li><a href="http://git-scm.com/downloads">Install & download Git</a></li>
+<li><a href="http://git-scm.com">http://git-scm.com</a></li>
+<li><a href="http://github.com">http://github.com</a></li>
+</ul>
+
+                    <h3>Videos</h3>
+<ul>
+<li><a href="http://www.youtube.com/watch?v=4XpnKHJAok8" >Talk of Linus Torvalds @Tech Talk</a></li>
+<li><a href="http://github.com/schacon" >Scot Chacon - github.com/schacon</a></li>
+</ul>
+
+                </section>
+
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                // available themes are in /css/theme
+                theme: Reveal.getQueryHash().theme,
+
+                // default/cube/page/concave/zoom/linear/fade/none
+                transition: Reveal.getQueryHash().transition || 'fade',
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
